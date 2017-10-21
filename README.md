@@ -1,0 +1,1 @@
+This project is the server side that will respond to requests from clients for POUI's. Initial develop will focus solely on serving up images and text instructions, and areas for future development include build tracking/timing, traveller tag replacement and enforcement of inspections
