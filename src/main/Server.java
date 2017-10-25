@@ -33,7 +33,7 @@ public class Server {
 		}
 
 		ConnectionHandler connectionHandler = new ConnectionHandler(port);
-		System.out.println("Starting OpenParty Server on port " + port);
+		System.out.println("Starting POUI Server on port " + port);
 		connectionHandler.start();
 
 		// loop until quit received from user. Then, trigger connectionHandler shutdown method.
