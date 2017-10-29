@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import containers.POUIContainer;
 import customTypes.Images;
 
 /**
@@ -15,10 +16,12 @@ import customTypes.Images;
  *
  */
 public class RequestThread extends Thread {
+	private POUIContainer pouiContainer;
 	private Socket socket;
 
-	public RequestThread(Socket socket) {
+	public RequestThread(Socket socket, POUIContainer container) {
 		this.socket = socket;
+		this.pouiContainer = container;
 	}
 
 	public void run() {
@@ -29,7 +32,7 @@ public class RequestThread extends Thread {
 
 			while (true) {
 				String input = in.readLine();
-				RequestProtocol reqProtocol = new RequestProtocol();
+				RequestProtocol reqProtocol = new RequestProtocol(pouiContainer);
 				Images images = reqProtocol.processRequest(input);
 				out.writeObject(images);
 				out.flush();

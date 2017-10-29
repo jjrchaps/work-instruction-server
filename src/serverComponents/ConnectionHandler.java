@@ -1,10 +1,11 @@
 package serverComponents;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-
+import containers.POUIContainer;
 
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
@@ -17,11 +18,16 @@ public class ConnectionHandler extends Thread {
 	 * An instance of serverSocket to be used for client communication
 	 */
 	private ServerSocket serverSocket;
-
+	
+	/**
+	 * An instance of POUIContainer that will be used to fulfill client requests
+	 */
+	protected POUIContainer pouiContainer;
 	/**
 	 * @param port the desired port number for the server socket to use
 	 */
-	public ConnectionHandler(int port) {
+	public ConnectionHandler(int port, POUIContainer container) {
+		pouiContainer = container;
 		try {
 			this.serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -38,7 +44,7 @@ public class ConnectionHandler extends Thread {
 		while (true) {
 			try {
 				Socket clientSocket = this.serverSocket.accept();
-				RequestThread clientRequestThread = new RequestThread(clientSocket);
+				RequestThread clientRequestThread = new RequestThread(clientSocket, pouiContainer);
 				clientRequestThread.start();
 			} catch (SocketException e) {
 				e.printStackTrace();

@@ -1,6 +1,8 @@
 package main;
 
 import java.util.Scanner;
+
+import containers.POUIContainer;
 import serverComponents.ConnectionHandler;
 
 /**
@@ -18,6 +20,10 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
+		System.out.println("Please enter the path to the folder containing all POUIs: ");
+		String pathToPouis = in.nextLine();
+		POUIContainer container = new POUIContainer(pathToPouis);
+		
 		System.out.println("Please enter a port number to use: ");
 
 		int port;
@@ -32,9 +38,11 @@ public class Server {
 			}
 		}
 
-		ConnectionHandler connectionHandler = new ConnectionHandler(port);
+		ConnectionHandler connectionHandler = new ConnectionHandler(port, container);
 		System.out.println("Starting POUI Server on port " + port);
 		connectionHandler.start();
+		
+		
 
 		// loop until quit received from user. Then, trigger connectionHandler shutdown method.
 		while (true) {
