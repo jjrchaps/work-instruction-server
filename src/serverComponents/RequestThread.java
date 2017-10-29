@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.LinkedList;
 
-import javax.swing.ImageIcon;
+import customTypes.Images;
 
 /**
  * Request thread extends thread, and handles client-server communication
@@ -31,7 +30,7 @@ public class RequestThread extends Thread {
 			while (true) {
 				String input = in.readLine();
 				RequestProtocol reqProtocol = new RequestProtocol();
-				LinkedList<ImageIcon> images = reqProtocol.processRequest(input);
+				Images images = reqProtocol.processRequest(input);
 				out.writeObject(images);
 				out.flush();
 			}
