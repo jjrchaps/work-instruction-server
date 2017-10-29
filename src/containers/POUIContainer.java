@@ -15,7 +15,7 @@ import customTypes.ServerPOUI;
  */
 public class POUIContainer {
 	private LinkedList<ServerPOUI> pouis;
-	
+
 	/**
 	 * Creates a new instance of POUIContainer. For all folders within folderOfPouis, 
 	 * generate a new ServerPOUI object and store in pouis.
@@ -23,22 +23,28 @@ public class POUIContainer {
 	 */
 	public POUIContainer(String folderOfPouis) {
 		pouis = new LinkedList<ServerPOUI>();
-		
+
 		// if the path given is in fact a directory, loop through directory and 
 		// generate ServerPOUI objects
 		File parentFile = new File(folderOfPouis);
 		if (parentFile.isDirectory()) {
 			for (File pouiFolder : parentFile.listFiles()) {
 				if (pouiFolder.isDirectory()) {
-					Images pouiImages = new Images(pouiFolder.getAbsolutePath());
 					String productID = pouiFolder.getName();
-					ServerPOUI poui = new ServerPOUI(productID, pouiImages);
-					pouis.add(poui);
+					// ignore any folders starting with a period as they're not 
+					// valid for our purposes
+					if (!(productID.substring(0, 1).equals("."))) {
+						// append a slash as we're passing a path to a folder and will require
+						// it in the next step (accessing the images within the folder)
+						Images pouiImages = new Images(pouiFolder.getAbsolutePath() + "/");
+						ServerPOUI poui = new ServerPOUI(productID, pouiImages);
+						pouis.add(poui);
+					}
 				}
 			}
 		}
 	}
-	
+
 	public ServerPOUI getPOUI(String productID) {
 		// iterate through pouis to find a match, and if found return it.
 		for (ServerPOUI poui : pouis) {
