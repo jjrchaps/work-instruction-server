@@ -39,7 +39,6 @@ public class RequestThread extends Thread {
 			}
 			// if there's a problem, break out of loop and let thread be destroyed
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Terminating connection");
 		}
 	}
