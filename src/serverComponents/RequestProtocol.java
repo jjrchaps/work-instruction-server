@@ -37,7 +37,7 @@ public class RequestProtocol {
 
 
 	public LinkedList<ImageIcon> processRequest(String input) {
-			int offset = pouiCollection.indexOf(new idImagePair<String, LinkedList<ImageIcon>>("test", null));
+			int offset = pouiCollection.indexOf(new idImagePair<String, LinkedList<ImageIcon>>(input, null));
 			if (offset == -1) {
 				return null;
 			}

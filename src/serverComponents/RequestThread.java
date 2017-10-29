@@ -2,8 +2,11 @@ package serverComponents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
+
+import javax.swing.ImageIcon;
 
 /**
  * Request thread extends thread, and handles client-server communication
@@ -13,7 +16,7 @@ import java.net.Socket;
  *
  */
 public class RequestThread extends Thread {
-	private Socket socket = null;
+	private Socket socket;
 
 	public RequestThread(Socket socket) {
 		this.socket = socket;
@@ -22,13 +25,14 @@ public class RequestThread extends Thread {
 	public void run() {
 		try {
 			// create input and output to communicate with client
-			PrintWriter out = new PrintWriter(socket.getOutputStream());
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			while (true) {
 				String input = in.readLine();
 				RequestProtocol reqProtocol = new RequestProtocol();
-				out.println(reqProtocol.processRequest(input));
+				LinkedList<ImageIcon> images = reqProtocol.processRequest(input);
+				out.writeObject(images);
 				out.flush();
 			}
 			// if there's a problem, break out of loop and let thread be destroyed

@@ -41,7 +41,7 @@ public class ConnectionHandler extends Thread {
 				RequestThread clientRequestThread = new RequestThread(clientSocket);
 				clientRequestThread.start();
 			} catch (SocketException e) {
-				// do nothing, we're in the midst of shutting down the system
+				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
