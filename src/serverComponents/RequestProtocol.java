@@ -12,13 +12,16 @@ public class RequestProtocol {
 	}
 
 
-	public Images processRequest(String input) {
+	public Object processRequest(String input) {
 		input = input.toLowerCase();
 		String[] splitInput = input.split(":");
-		if (splitInput[0].equals("pouirequest")) {
+		String request = splitInput[0];
+		if (request.equals("pouirequest")) {
 			return pouiRequest(splitInput[1]);
 		}
-
+		if (request.equals("productlist")) {
+			return productListRequest();
+		}
 		else {
 			return null;
 		}
@@ -32,5 +35,9 @@ public class RequestProtocol {
 		else {
 			return null;
 		}
+	}
+	
+	private String productListRequest() {
+		return pouiContainer.getAllProductID();
 	}
 }
