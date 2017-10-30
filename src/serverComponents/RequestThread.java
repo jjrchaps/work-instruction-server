@@ -36,8 +36,8 @@ public class RequestThread extends Thread {
 				out.flush();
 			}
 			// if there's a problem, break out of loop and let thread be destroyed
-		} catch (IOException e) {
-			System.out.println("Terminating connection");
+		} catch (IOException|NullPointerException e) {
+			// do nothing, a user has disconnected and thread should be terminated.
 		}
 	}
 }
