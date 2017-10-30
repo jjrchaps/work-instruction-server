@@ -13,10 +13,23 @@ public class RequestProtocol {
 
 
 	public Images processRequest(String input) {
+		input = input.toLowerCase();
+		String[] splitInput = input.split(":");
+		if (splitInput[0].equals("pouirequest")) {
+			return pouiRequest(splitInput[1]);
+		}
+
+		else {
+			return null;
+		}
+	}
+
+	private Images pouiRequest(String input) {
 		ServerPOUI poui = pouiContainer.getPOUI(input);
 		if (poui != null) {
 			return poui.getImages();
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
