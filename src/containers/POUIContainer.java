@@ -55,4 +55,20 @@ public class POUIContainer {
 		// if we get to this point it means that we didn't find a match. Return null in this case.
 		return null;
 	}
+	
+	/**
+	 * Returns all product id's concatenated down to single string, each separated by a 
+	 * semicolon.
+	 * @return All IDs of current available product POUIs
+	 */
+	public String getAllProductID() {
+		String pouiString = "";
+		
+		for (ServerPOUI product : this.pouis) {
+			pouiString = pouiString + product.getProductID() + ";";
+		}
+		// strip the last semicolon off the end.
+		pouiString = pouiString.substring(0, pouiString.length());
+		return pouiString;
+	}
 }
