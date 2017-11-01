@@ -50,7 +50,7 @@ public class ConnectionHandler extends Thread {
 				clientThreads.add(clientRequestThread);
 				clientRequestThread.start();
 			} catch (SocketException e) {
-				e.printStackTrace();
+				//TODO: Decide proper handling of SocketException (for now it's nothing)
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -66,7 +66,6 @@ public class ConnectionHandler extends Thread {
 			serverSocket.close();
 			System.exit(0);
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.exit(1);
 		}
 	}
