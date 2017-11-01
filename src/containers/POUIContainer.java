@@ -48,7 +48,7 @@ public class POUIContainer {
 	public ServerPOUI getPOUI(String productID) {
 		// iterate through pouis to find a match, and if found return it.
 		for (ServerPOUI poui : pouis) {
-			if (poui.getProductID().equals(productID)) {
+			if (poui.getProductID().equalsIgnoreCase(productID)) {
 				return poui;
 			}
 		}
