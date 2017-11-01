@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import containers.POUIContainer;
-
+//TODO: Proper commenting required throughout class
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
  * for each connection that will handle requests.
@@ -23,9 +24,9 @@ public class ConnectionHandler extends Thread {
 	 * An instance of POUIContainer that will be used to fulfill client requests
 	 */
 	protected POUIContainer pouiContainer;
-	/**
-	 * @param port the desired port number for the server socket to use
-	 */
+	
+	private ArrayList<RequestThread> clientThreads;
+	
 	public ConnectionHandler(int port, POUIContainer container) {
 		pouiContainer = container;
 		try {
@@ -34,6 +35,7 @@ public class ConnectionHandler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		clientThreads = new ArrayList<RequestThread>();
 	}
 
 	/**
@@ -45,6 +47,7 @@ public class ConnectionHandler extends Thread {
 			try {
 				Socket clientSocket = this.serverSocket.accept();
 				RequestThread clientRequestThread = new RequestThread(clientSocket, pouiContainer);
+				clientThreads.add(clientRequestThread);
 				clientRequestThread.start();
 			} catch (SocketException e) {
 				e.printStackTrace();
@@ -56,8 +59,11 @@ public class ConnectionHandler extends Thread {
 
 	public void shutdown() {
 		try {
-			System.out.println("Shutting down");
-			this.serverSocket.close();
+			System.out.println("Shutting down...");
+			for (RequestThread client : clientThreads) {
+				client.shutdown();
+			}
+			serverSocket.close();
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
