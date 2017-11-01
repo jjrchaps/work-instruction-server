@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import containers.POUIContainer;
-
+//TODO: Proper commenting required throughout class
 /**
  * Request thread extends thread, and handles client-server communication
  * Uses a RequestProtocol class to process requests and generate responses
@@ -17,6 +17,8 @@ import containers.POUIContainer;
 public class RequestThread extends Thread {
 	private POUIContainer pouiContainer;
 	private Socket socket;
+	private ObjectOutputStream out;
+	private BufferedReader in;
 
 	public RequestThread(Socket socket, POUIContainer container) {
 		this.socket = socket;
@@ -26,8 +28,8 @@ public class RequestThread extends Thread {
 	public void run() {
 		try {
 			// create input and output to communicate with client
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			while (true) {
 				String input = in.readLine();
@@ -38,6 +40,15 @@ public class RequestThread extends Thread {
 			// if there's a problem, break out of loop and let thread be destroyed
 		} catch (IOException|NullPointerException e) {
 			// do nothing, a user has disconnected and thread should be terminated.
+		}
+	}
+	
+	public void shutdown() {
+		try {
+			out.close();
+			in.close();
+		} catch (IOException e) {
+			// do nothing, we just want this thread dead anyways
 		}
 	}
 }
