@@ -42,7 +42,7 @@ public class Server {
 		System.out.println("Starting POUI Server on port " + port);
 		connectionHandler.start();
 		
-		
+		System.out.println("To exit, type 'quit' followed by the Enter key at any time.");
 
 		// loop until quit received from user. Then, trigger connectionHandler shutdown method.
 		while (true) {
