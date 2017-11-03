@@ -5,19 +5,17 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import containers.POUIContainer;
 /**
  * Request thread extends thread, and handles client-server communication
  * Uses a RequestProtocol class to process requests and generate responses
  * to be sent back to client
  * @author jameschapman
- *
  */
 public class RequestThread extends Thread {
 	/**
-	 * Contains all POUIs currently known to the server.
+	 * Path to the parent folder containing all the POUIs.
 	 */
-	private POUIContainer pouiContainer;
+	private String pathToParentFolder;
 
 	/**
 	 * Instance of socket that will be used to store the connection between server and client.
@@ -37,12 +35,12 @@ public class RequestThread extends Thread {
 	/**
 	 * Creates a new thread with the specified socket and the container of POUIs that 
 	 * is needed to satisfy all requests.
-	 * @param socket The socket containing the connection with the cleint.
+	 * @param socket The socket containing the connection with the client.
 	 * @param container THe container with all POUIs known to the server.
 	 */
-	public RequestThread(Socket socket, POUIContainer container) {
+	public RequestThread(Socket socket, String pathToParentFolder) {
 		this.socket = socket;
-		this.pouiContainer = container;
+		this.pathToParentFolder = pathToParentFolder;
 	}
 
 	/**
@@ -56,7 +54,7 @@ public class RequestThread extends Thread {
 
 			while (true) {
 				String input = in.readLine();
-				RequestProtocol reqProtocol = new RequestProtocol(pouiContainer);
+				RequestProtocol reqProtocol = new RequestProtocol(pathToParentFolder);
 				out.writeObject(reqProtocol.processRequest(input));
 				out.flush();
 			}
