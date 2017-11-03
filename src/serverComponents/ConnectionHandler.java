@@ -26,10 +26,6 @@ public class ConnectionHandler extends Thread {
 	protected POUIContainer pouiContainer;
 	
 	//TODO: Remove tracking off clients and adding to this list
-	/**
-	 * A list of all client threads currently active, will be maintained and used for shutting down the system.
-	 */
-	private ArrayList<RequestThread> clientThreads;
 	
 	/**
 	 * Constructs ConnectionHandler with the given port and folder path that is storing all POUIs.
@@ -44,7 +40,6 @@ public class ConnectionHandler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		clientThreads = new ArrayList<RequestThread>();
 	}
 
 	/**
@@ -56,7 +51,6 @@ public class ConnectionHandler extends Thread {
 			try {
 				Socket clientSocket = this.serverSocket.accept();
 				RequestThread clientRequestThread = new RequestThread(clientSocket, pouiContainer);
-				clientThreads.add(clientRequestThread);
 				clientRequestThread.start();
 			} catch (SocketException e) {
 				//TODO: Decide proper handling of SocketException (for now it's nothing)
@@ -69,14 +63,10 @@ public class ConnectionHandler extends Thread {
 	//TODO: Remove all handling of shutting down clients. The server will not be receiving critical information from the client, they can just disconnect.
 	public void shutdown() {
 		try {
-			System.out.println("Shutting down...");
-			for (RequestThread client : clientThreads) {
-				client.shutdown();
-			}
 			serverSocket.close();
 			System.exit(0);
 		} catch (IOException e) {
-			System.exit(1);
+			// let this go, we expect to see some errors -- they don't need to be handled.
 		}
 	}
 }
