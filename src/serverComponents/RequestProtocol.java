@@ -1,8 +1,8 @@
 package serverComponents;
 
-import containers.POUIContainer;
+import java.io.File;
+
 import customTypes.Images;
-import customTypes.ServerPOUI;
 
 /**
  * RequestProtocol receives all the requests made by a client, determines what the proper way to handle is, 
@@ -10,17 +10,14 @@ import customTypes.ServerPOUI;
  * @author jameschapman
  */
 public class RequestProtocol {
-	/**
-	 * A local instance of all the POUI available to the server.
-	 */
-	private POUIContainer pouiContainer;
+	private String pathToParentFolder;
 	
 	/**
-	 * Constructs a new instance of RequestProtocol with a container of all POUIs
-	 * @param container The container containing all POUIs known to the server.
+	 * Initializes pathToParentFolder with the given parameter
+	 * @param pathToParentFolder The path to the folder where all POUI's are stored.
 	 */
-	public RequestProtocol(POUIContainer container) {
-		pouiContainer = container;
+	public RequestProtocol(String pathToParentFolder) {
+		this.pathToParentFolder = pathToParentFolder;
 	}
 
 	/**
@@ -50,16 +47,27 @@ public class RequestProtocol {
 	 * @return The images for the POUIs, null if the POUI does not exist (shouldn't happen)
 	 */
 	private Images pouiRequest(String input) {
-		ServerPOUI poui = pouiContainer.getPOUI(input);
-		if (poui != null) {
-			return poui.getImages();
-		}
-		else {
-			return null;
-		}
+		// properly format the path to where the images are stored.
+		String pathToAssemblyImages = pathToParentFolder + "/" + input + "/";
+		Images pouiImages = new Images(pathToAssemblyImages);
+		return pouiImages;
 	}
-	
+
 	private String productListRequest() {
-		return pouiContainer.getAllProductID();
+		String productNames = "";
+		// if the path given is in fact a directory, loop through directory and discover available assemblies.
+		File parentFolder = new File(pathToParentFolder);
+		if (parentFolder.isDirectory()) {
+			for (File pouiFolder : parentFolder.listFiles()) {
+				if (pouiFolder.isDirectory()) {
+					String productName = pouiFolder.getName();
+					if (!(productName.substring(0, 1).equals("."))) {
+						productNames += productName + ";";
+					}
+				}
+			}
+		}
+		// return the formatted string, and remove the last semicolon that was appended above
+		return productNames.substring(0, productNames.length());
 	}
 }
