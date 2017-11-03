@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 
 import containers.POUIContainer;
-//TODO: Proper commenting required throughout class
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
  * for each connection that will handle requests.
@@ -24,8 +22,6 @@ public class ConnectionHandler extends Thread {
 	 * An instance of POUIContainer that will be used to fulfill client requests
 	 */
 	protected POUIContainer pouiContainer;
-	
-	//TODO: Remove tracking off clients and adding to this list
 	
 	/**
 	 * Constructs ConnectionHandler with the given port and folder path that is storing all POUIs.
@@ -53,20 +49,19 @@ public class ConnectionHandler extends Thread {
 				RequestThread clientRequestThread = new RequestThread(clientSocket, pouiContainer);
 				clientRequestThread.start();
 			} catch (SocketException e) {
-				//TODO: Decide proper handling of SocketException (for now it's nothing)
+				// do nothing, let the client's connection be terminated
 			} catch (IOException e) {
-				e.printStackTrace();
+				// do nothing, client will disconnect. This error does not have to be handled at this level.
 			}
 		}
 	}
 	
-	//TODO: Remove all handling of shutting down clients. The server will not be receiving critical information from the client, they can just disconnect.
 	public void shutdown() {
 		try {
 			serverSocket.close();
 			System.exit(0);
 		} catch (IOException e) {
-			// let this go, we expect to see some errors -- they don't need to be handled.
+			// do nothing, we expect to see some errors -- they don't need to be handled in this case.
 		}
 	}
 }
