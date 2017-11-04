@@ -11,7 +11,7 @@ import customTypes.Images;
  */
 public class RequestProtocol {
 	private String pathToParentFolder;
-	
+
 	/**
 	 * Initializes pathToParentFolder with the given parameter
 	 * @param pathToParentFolder The path to the folder where all POUI's are stored.
@@ -36,6 +36,9 @@ public class RequestProtocol {
 		if (request.equals("productlist")) {
 			return productListRequest();
 		}
+		if (request.equals("reporttimings")) {
+			return reportTimings(splitInput);
+		}
 		else {
 			return null;
 		}
@@ -53,6 +56,11 @@ public class RequestProtocol {
 		return pouiImages;
 	}
 
+	/**
+	 * Creates a list of all products within the parent POUI folder and returns as a string, 
+	 * with each of the different product IDs being separated by a semicolon.
+	 * @return A string containing all the available products.
+	 */
 	private String productListRequest() {
 		String productNames = "";
 		// if the path given is in fact a directory, loop through directory and discover available assemblies.
@@ -69,5 +77,21 @@ public class RequestProtocol {
 		}
 		// return the formatted string, and remove the last semicolon that was appended above
 		return productNames.substring(0, productNames.length());
+	}
+
+	/**
+	 * Accepts an array of strings that represent the recorded timings from a client upon
+	 * completion of the product.
+	 * @param splitInput All the timings, as string, separated by a colon.
+	 * @return True if the timings were successfully handled, false otherwise.
+	 */
+	private boolean reportTimings(String[] splitInput) {
+		//TODO:Implement the storing of these results instead of just printing them to console.
+		for (String time : splitInput) {
+			if (!(time.equals("reporttimings"))) {
+				System.out.println(time);
+			}
+		}
+		return true;
 	}
 }
