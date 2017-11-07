@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.util.Scanner;
 
 import serverComponents.ConnectionHandler;
@@ -35,7 +36,16 @@ public class Server {
 				System.out.println("Please enter an integer.");
 			}
 		}
-
+		
+		// if the timings folder doesn't already exists, create a new one
+		// this will only take place on fresh installs or if something went horribly wrong.
+		if (!(new File(pathToParentFolder + "/.timings").exists())) {
+			if (!(new File(pathToParentFolder + "/.timings").mkdir())) {
+				System.out.println("Failed to create timings directory.");
+				System.exit(1);
+			}
+		}
+		
 		ConnectionHandler connectionHandler = new ConnectionHandler(port, pathToParentFolder);
 		System.out.println("Starting POUI Server on port " + port);
 		connectionHandler.start();
