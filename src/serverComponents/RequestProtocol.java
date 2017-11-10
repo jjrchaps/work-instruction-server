@@ -1,6 +1,10 @@
 package serverComponents;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Calendar;
 
 import customTypes.Images;
 
@@ -86,12 +90,50 @@ public class RequestProtocol {
 	 * @return True if the timings were successfully handled, false otherwise.
 	 */
 	private boolean reportTimings(String[] splitInput) {
-		//TODO:Implement the storing of these results instead of just printing them to console.
-		for (String time : splitInput) {
-			if (!(time.equals("reporttimings"))) {
-				System.out.println(time);
+		// Get the productID from the received request.
+		String productID = splitInput[1];
+
+		// check to see if this product ID already has a folder. If not, we create one.
+		if (!(new File(this.pathToParentFolder + "/.timings/" + productID)).exists()) {
+			if (!(new File(pathToParentFolder + "/.timings/" + productID).mkdir())) {
+				System.out.println("Failed to create timings folder for " + productID);
+				return false;
 			}
 		}
+		else {
+			if (!(new File(pathToParentFolder + "/.timings/" + productID).isDirectory())) {
+				System.out.println("File with name timings found, but it's not a directory.");
+				return false;
+			}
+		}
+		
+		// create the filename for the text file that will contain all the timings.
+		// file names are formatted by the date (all builds that took place on the same day
+		// will be in the same file). The date is represented by DAY.MONTH.YEAR without the forward
+		// slashes.
+		Calendar calendar = Calendar.getInstance();
+		String fileName = this.pathToParentFolder + ".timings/" + productID + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "." + 
+				(calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + ".txt";
+		
+		// create the file to be written, and then write to it
+		try {
+			// check to see if this file has been created already, and if so, add a newline between these timings
+			// and previous timings
+			boolean newFile = !(new File(fileName).exists());
+			File file = new File(fileName);
+			PrintWriter out = new PrintWriter(new FileOutputStream(file, true));
+			if (!newFile) {
+				out.write("\n");
+			}
+			for (int i = 2; i < splitInput.length; i++) {
+				out.println("Step" + (i - 1) + ":" + splitInput[i]);
+			}
+			out.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Failed to create file for product " + productID);
+			//TODO: Add custom exception
+		}
+
 		return true;
 	}
 }
