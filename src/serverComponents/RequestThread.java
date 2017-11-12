@@ -50,6 +50,8 @@ public class RequestThread extends Thread {
 		try {
 			// create input and output to communicate with client
 			out = new ObjectOutputStream(socket.getOutputStream());
+			// flush for the client to establish ObjectInputStream
+			out.flush();
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			while (true) {
