@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import storage.timingStorer;
 
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
@@ -41,10 +45,13 @@ public class ConnectionHandler extends Thread {
 	 * incoming connection
 	 */
 	public void run() {
+		BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+		timingStorer timingStorer = new timingStorer(queue, pathToParentFolder);
+		timingStorer.start();
 		while (true) {
 			try {
 				Socket clientSocket = this.serverSocket.accept();
-				RequestThread clientRequestThread = new RequestThread(clientSocket, pathToParentFolder);
+				RequestThread clientRequestThread = new RequestThread(clientSocket, pathToParentFolder, queue);
 				clientRequestThread.start();
 			} catch (SocketException e) {
 				// do nothing, let the client's connection be terminated
