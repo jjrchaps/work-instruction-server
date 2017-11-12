@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Request thread extends thread, and handles client-server communication
@@ -31,6 +32,11 @@ public class RequestThread extends Thread {
 	 * The input stream that will be used to received text requests from the client.
 	 */
 	private BufferedReader in;
+	
+	/**
+	 * A queue to write timings to be stored to, to prevent multiple threads causing issues with one another.
+	 */
+	private BlockingQueue<String> queue;
 
 	/**
 	 * Creates a new thread with the specified socket and the container of POUIs that 
@@ -38,9 +44,10 @@ public class RequestThread extends Thread {
 	 * @param socket The socket containing the connection with the client.
 	 * @param container THe container with all POUIs known to the server.
 	 */
-	public RequestThread(Socket socket, String pathToParentFolder) {
+	public RequestThread(Socket socket, String pathToParentFolder, BlockingQueue<String> queue) {
 		this.socket = socket;
 		this.pathToParentFolder = pathToParentFolder;
+		this.queue = queue;
 	}
 
 	/**
@@ -56,7 +63,7 @@ public class RequestThread extends Thread {
 
 			while (true) {
 				String input = in.readLine();
-				RequestProtocol reqProtocol = new RequestProtocol(pathToParentFolder);
+				RequestProtocol reqProtocol = new RequestProtocol(pathToParentFolder, queue);
 				out.writeObject(reqProtocol.processRequest(input));
 				out.flush();
 			}
