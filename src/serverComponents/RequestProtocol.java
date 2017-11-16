@@ -3,7 +3,7 @@ package serverComponents;
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
 
-import customTypes.Images;
+import auxiliary.Images;
 
 /**
  * RequestProtocol receives all the requests made by a client, determines what the proper way to handle is, 

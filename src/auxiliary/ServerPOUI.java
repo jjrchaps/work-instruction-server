@@ -1,4 +1,4 @@
-package customTypes;
+package auxiliary;
 
 /**
  * Stores an Event e and a string identifier in a pair to be stored
