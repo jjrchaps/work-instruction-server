@@ -6,7 +6,14 @@ package auxiliary;
  * @author jameschapman
  */
 public class ServerPOUI {
+	/**
+	 * The unique product identifier that these POUIs instruct to build
+	 */
 	private String productID;
+	
+	/**
+	 * The images of instructions to be displayed to the user
+	 */
 	private Images images;
 	
 	/**

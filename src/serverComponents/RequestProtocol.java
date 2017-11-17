@@ -88,7 +88,12 @@ public class RequestProtocol {
 		// return the formatted string, and remove the last semicolon that was appended above
 		return productNames.substring(0, productNames.length());
 	}
-
+	
+	/**
+	 * Adds the reported timings to a queue to the be stored.
+	 * @param timings The string of timings that has been reported from the client
+	 * @return True if the recordings were successfully placed in the queue, false otherwise.
+	 */
 	private boolean reportTimings(String timings) {
 		try {
 			queue.put(timings);

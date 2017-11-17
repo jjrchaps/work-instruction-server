@@ -7,6 +7,12 @@ import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * timingStorer is responsible for the saving of recorded times that have been
+ * reported to the server. It pulls strings from a common queue and creates the
+ * appropriate files/folders to store times within.
+ * @author jameschapman
+ */
 public class timingStorer extends Thread {
 	/**
 	 * A queue to pull timing information to store to file.
@@ -86,7 +92,7 @@ public class timingStorer extends Thread {
 			System.out.println("Failed to create file for product " + productID);
 			//TODO: Add custom exception
 		}
-
+		
 		return true;
 	}
 }

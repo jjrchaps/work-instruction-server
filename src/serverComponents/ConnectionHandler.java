@@ -61,6 +61,10 @@ public class ConnectionHandler extends Thread {
 		}
 	}
 	
+	/**
+	 * Closes the Server Socket opened and exits the system. Ignores IOException as this is a result
+	 * of closing the socket.
+	 */
 	public void shutdown() {
 		try {
 			serverSocket.close();
