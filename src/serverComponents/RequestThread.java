@@ -60,12 +60,10 @@ public class RequestThread extends Thread {
 			// flush for the client to establish ObjectInputStream
 			out.flush();
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+			RequestProtocol reqProtocol = new RequestProtocol(pathToParentFolder, queue, out);
+			
 			while (true) {
-				String input = in.readLine();
-				RequestProtocol reqProtocol = new RequestProtocol(pathToParentFolder, queue);
-				out.writeObject(reqProtocol.processRequest(input));
-				out.flush();
+				reqProtocol.processRequest(in.readLine());
 			}
 			// if there's a problem, break out of loop and let thread be destroyed
 		} catch (IOException|NullPointerException e) {
