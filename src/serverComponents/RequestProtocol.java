@@ -3,6 +3,7 @@ package serverComponents;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 
 import auxiliary.Images;
@@ -17,12 +18,12 @@ public class RequestProtocol {
 	 * A path to the parent folder containing all POUIs that are available to a client.
 	 */
 	private String pathToParentFolder;
-	
+
 	/**
 	 * A queue that will be used for storing timings in a thread safe manner.
 	 */
 	private BlockingQueue<String> queue;
-	
+
 	/**
 	 * Local instance of the output stream to the client to return responses from the request
 	 */
@@ -48,8 +49,11 @@ public class RequestProtocol {
 		input = input.toLowerCase();
 		String[] splitInput = input.split(":");
 		String request = splitInput[0];
-		if (request.equals("pouirequest")) {
-			pouiRequest(splitInput[1]);
+		if (request.equals("pouiimagerequest")) {
+			pouiImageRequest(splitInput[1]);
+		}
+		if (request.equals("pouiinspectionrequest")) {
+			pouiInspectionRequest(splitInput[1]);
 		}
 		if (request.equals("productlist")) {
 			productListRequest();
@@ -62,13 +66,49 @@ public class RequestProtocol {
 	/**
 	 * Fetches POUI images from local instance of pouiContainer.
 	 * @param input The product id, name, etc of the desired instruction set
-	 * @return The images for the POUIs, null if the POUI does not exist (shouldn't happen)
+	 * @IOException Thrown if there are any issues writing to the ObjectOutputStream
 	 */
-	private void pouiRequest(String input) throws IOException {
+	private void pouiImageRequest(String input) throws IOException {
 		// properly format the path to where the images are stored.
 		String pathToAssemblyImages = pathToParentFolder + "/" + input + "/";
 		Images pouiImages = new Images(pathToAssemblyImages);
-		sendResponse(pouiImages);
+		sendResponse(pouiImages);	
+	}
+
+	/**
+	 * Generates and sends an array of booleans representing which steps in the poui (specified
+	 * by the input from the client) require level 3 inspections
+	 * @param input The productID of the poui of which the inspections are desired.
+	 * @IOException Thrown if there are any issues writing to the ObjectOutputStream
+	 */
+	private void pouiInspectionRequest(String input) throws IOException {
+		String pathToAssemblyImages = pathToParentFolder + "/" + input + "/";
+		// get the number of images in the folder. Folder contains images and the text file
+		// of inspections, so 1 is subtracted.
+		int numberOfImages = new File(pathToAssemblyImages).listFiles().length -1;
+		String pathToInspections = pathToParentFolder + "/" + input + "/inspections.txt";
+		boolean[] inspectionRequired = new boolean[numberOfImages];
+		if (new File(pathToInspections).exists()) {
+			File inspectionFile = new File(pathToInspections);
+			Scanner in = new Scanner(inspectionFile);
+			for (int i = 0; i < numberOfImages; i++) {
+				if (in.nextLine().equalsIgnoreCase("true")) {
+					inspectionRequired[i] = true;
+				}
+				else {
+					inspectionRequired[i] = false;
+				}
+			}
+			in.close();
+			sendResponse(inspectionRequired);
+		}
+		else {
+			for (int i = 0; i < numberOfImages; i++) {
+				inspectionRequired[i] = false;
+			}
+			sendResponse(inspectionRequired);
+		}
+
 	}
 
 	/**
@@ -92,11 +132,11 @@ public class RequestProtocol {
 		// return the formatted string, and remove the last semicolon that was appended above
 		sendResponse(productNames.substring(0, productNames.length()));
 	}
-	
+
 	/**
 	 * Adds the reported timings to a queue to the be stored.
 	 * @param timings The string of timings that has been reported from the client
-	 * @return True if the recordings were successfully placed in the queue, false otherwise.
+	 * @IOException Thrown if there are any issues writing to the ObjectOutputStream
 	 */
 	private void reportTimings(String timings) throws IOException {
 		try {
@@ -106,7 +146,7 @@ public class RequestProtocol {
 		}
 		sendResponse(true);
 	}
-	
+
 	private void sendResponse(Object response) throws IOException {
 		out.writeObject(response);
 		out.flush();
