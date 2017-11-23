@@ -26,7 +26,7 @@ public class Images implements Serializable {
 	 * @param folderLocation The path to where all the images are stored.
 	 */
 	public Images(String folderPath) {
-		int numberOfImages = new File(folderPath).listFiles().length;
+		int numberOfImages = new File(folderPath).listFiles().length -1;
 		images = new LinkedList<ImageIcon>();
 		for (int i = 1; i <= numberOfImages; i++) {
 			String fileName = folderPath + "step" + Integer.toString(i) + ".jpg";
