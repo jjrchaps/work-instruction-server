@@ -65,6 +65,9 @@ public class RequestProtocol {
 		else if (request.equals("inspectioncheckrequest")) {
 			inspectionCheckRequest(input);
 		}
+		else {
+			sendResponse("Request Not Supported");
+		}
 	}
 
 	/**
