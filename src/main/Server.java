@@ -53,6 +53,5 @@ public class Server {
 
 		ServerInterface textInterface = new ServerInterface(in, connectionHandler);
 		textInterface.start();
-		
 	}
 }
