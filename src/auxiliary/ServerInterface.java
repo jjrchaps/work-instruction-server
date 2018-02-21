@@ -33,9 +33,9 @@ public class ServerInterface {
 	 * receive/parse input and also control server components.
 	 */
 	public void start() {
-		System.out.println("Available commands are:");
 		// loop until quit received from user. Then, trigger connectionHandler shutdown method.
 		while (true) {
+			displayOptions();
 			if (in.hasNextInt()) {
 				int input = in.nextInt();
 				if (input == 1) {
@@ -43,12 +43,31 @@ public class ServerInterface {
 				}
 				else {
 					System.out.println("Invalid selection");
+					// advance the scanner
 					in.nextLine();
 				}
 			}
+			else {
+				System.out.println("Invalid entry");
+				// advance the scanner
+				in.nextLine();
+			}
 		}
 	}
-	
+
+	private void displayOptions() {
+		// formatting for top of poui controls
+		System.out.println("--------------------");
+		System.out.println("POUI Server Controls");
+		System.out.println("--------------------\n");
+
+		// list available options
+		System.out.println("1: Shutdown Server");
+
+		// query for user input
+		System.out.println("\nSelection: ");
+	}
+
 	/**
 	 * Stops the server from running and ends the program.
 	 */
