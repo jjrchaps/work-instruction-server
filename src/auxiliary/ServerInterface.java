@@ -32,13 +32,19 @@ public class ServerInterface {
 	 * listening for interactions from the user. It will
 	 * receive/parse input and also control server components.
 	 */
-	public void start() {
+	public void getInput() {
 		// loop until quit received from user. Then, trigger connectionHandler shutdown method.
 		while (true) {
 			displayOptions();
 			if (in.hasNextInt()) {
 				int input = in.nextInt();
 				if (input == 1) {
+					pauseServer();
+				}
+				else if (input == 2) {
+					startServer();
+				}
+				else if (input == 3) {
 					shutdown();
 				}
 				else {
@@ -62,8 +68,10 @@ public class ServerInterface {
 		System.out.println("--------------------\n");
 
 		// list available options
-		System.out.println("1: Shutdown Server");
-
+		System.out.println("1: Pause Server");
+		System.out.println("2: Start Server");
+		System.out.println("3: Shutdown Server");
+		
 		// query for user input
 		System.out.println("\nSelection: ");
 	}
@@ -74,5 +82,19 @@ public class ServerInterface {
 	private void shutdown() {
 		in.close();
 		handler.shutdown();
+	}
+	
+	/**
+	 * Pauses the server from accepting new connections and communicating with clients
+	 */
+	private void pauseServer() {
+		handler.pauseServer();
+	}
+	
+	/**
+	 * Restarts the server listening for incoming connections
+	 */
+	private void startServer() {
+		handler.startServer();
 	}
 }
