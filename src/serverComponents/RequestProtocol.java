@@ -90,12 +90,15 @@ public class RequestProtocol {
 	 */
 	private void pouiInspectionRequest(String input) throws IOException {
 		String pathToAssemblyImages = pathToParentFolder + "/" + input + "/";
-		// get the number of images in the folder. Folder contains images and the text file
-		// of inspections, so 1 is subtracted.
-		int numberOfImages = new File(pathToAssemblyImages).listFiles().length -1;
+		// get the number of images in the folder. Folder contains images and sometimes an inspection
+		// file. If the inspection file exists, we will remove one from the image count
+		int numberOfImages = new File(pathToAssemblyImages).listFiles().length;
 		String pathToInspections = pathToParentFolder + "/" + input + "/inspections.txt";
 		boolean[] inspectionRequired = new boolean[numberOfImages];
 		if (new File(pathToInspections).exists()) {
+			// subtract one from the total image count since we now know that one of the files included
+			// is a text file, not an image.
+			numberOfImages--;
 			File inspectionFile = new File(pathToInspections);
 			Scanner in = new Scanner(inspectionFile);
 			for (int i = 0; i < numberOfImages; i++) {
