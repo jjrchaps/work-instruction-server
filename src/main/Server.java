@@ -52,6 +52,6 @@ public class Server {
 		connectionHandler.start();
 
 		ServerInterface textInterface = new ServerInterface(in, connectionHandler);
-		textInterface.start();
+		textInterface.getInput();
 	}
 }
