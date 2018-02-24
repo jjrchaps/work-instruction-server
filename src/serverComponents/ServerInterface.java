@@ -1,8 +1,6 @@
-package auxiliary;
+package serverComponents;
 
 import java.util.Scanner;
-
-import serverComponents.ConnectionHandler;
 
 /**
  * Server interface is the class that handles user interactions. The

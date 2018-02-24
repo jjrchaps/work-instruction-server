@@ -3,8 +3,8 @@ package main;
 import java.io.File;
 import java.util.Scanner;
 
-import auxiliary.ServerInterface;
 import serverComponents.ConnectionHandler;
+import serverComponents.ServerInterface;
 
 /**
  * This will function as the main entry point to the system. It will start a new instance
