@@ -61,7 +61,7 @@ public class ServerInterface {
 
 	private void displayOptions() {
 		// formatting for top of poui controls
-		System.out.println("--------------------");
+		System.out.println("\n--------------------");
 		System.out.println("POUI Server Controls");
 		System.out.println("--------------------\n");
 
@@ -78,6 +78,7 @@ public class ServerInterface {
 	 * Stops the server from running and ends the program.
 	 */
 	private void shutdown() {
+		System.out.println("Server shutting down...");
 		in.close();
 		handler.shutdown();
 	}
@@ -87,6 +88,7 @@ public class ServerInterface {
 	 */
 	private void pauseServer() {
 		handler.pauseServer();
+		System.out.println("Server Paused");
 	}
 	
 	/**
@@ -94,5 +96,6 @@ public class ServerInterface {
 	 */
 	private void startServer() {
 		handler.startServer();
+		System.out.println("Server Restarted");
 	}
 }
