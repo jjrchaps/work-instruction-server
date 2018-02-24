@@ -85,12 +85,11 @@ public class timingStorer extends Thread {
 				out.write("\n");
 			}
 			for (int i = 2; i < splitInput.length; i++) {
-				out.println("Step" + (i - 1) + ":" + splitInput[i]);
+				out.println(splitInput[i]);
 			}
 			out.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Failed to create file for product " + productID);
-			//TODO: Add custom exception
 		}
 		
 		return true;
