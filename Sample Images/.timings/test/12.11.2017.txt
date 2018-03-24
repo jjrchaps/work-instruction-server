@@ -1,7 +1,0 @@
-Step1:1.49
-Step2:0.12
-Step3:0.88
-
-Step1:1.4
-Step2:0.12
-Step3:1.63
