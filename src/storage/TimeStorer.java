@@ -76,14 +76,8 @@ public class TimeStorer extends Thread {
 
 		// create the file to be written, and then write to it
 		try {
-			// check to see if this file has been created already, and if so, add a newline between these timings
-			// and previous timings
-			boolean newFile = !(new File(fileName).exists());
 			File file = new File(fileName);
 			PrintWriter out = new PrintWriter(new FileOutputStream(file, true));
-			if (!newFile) {
-				out.write("\n");
-			}
 			for (int i = 2; i < splitInput.length; i++) {
 				out.println(splitInput[i]);
 			}
