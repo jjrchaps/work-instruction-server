@@ -3,6 +3,8 @@ package serverComponents;
 import java.io.File;
 import java.util.Scanner;
 
+import storage.TimeRetrieval;
+
 /**
  * Server interface is the class that handles user interactions. The
  * interface will be text based and will be started after the server's
@@ -22,15 +24,21 @@ public class ServerInterface {
 	private ConnectionHandler handler;
 
 	/**
+	 * Path to parent folder containing all assemblies
+	 */
+	private String pathToParentFolder;
+
+	/**
 	 * Creates new instance of server interface, which will be the method of user interaction
 	 * with the work instruction server.
 	 * @param in An instance of Scanner to read input from the terminal
 	 * @param handler An instance of ConnectionHandler that manages all client threads
 	 * @param pathToAssembly The absolute path to the parent folder containing all assemblies.
 	 */
-	public ServerInterface(Scanner in, ConnectionHandler handler, String pathToAssembly) {
+	public ServerInterface(Scanner in, ConnectionHandler handler, String pathToParentFolder) {
 		this.in = in;
 		this.handler = handler;
+		this.pathToParentFolder = pathToParentFolder;
 	}
 
 	/**
@@ -77,7 +85,7 @@ public class ServerInterface {
 		System.out.println("1: Pause Server");
 		System.out.println("2: Start Server");
 		System.out.println("3: Shutdown Server");
-		
+
 		// query for user input
 		System.out.println("\nSelection: ");
 	}
@@ -90,7 +98,7 @@ public class ServerInterface {
 		in.close();
 		handler.shutdown();
 	}
-	
+
 	/**
 	 * Pauses the server from accepting new connections and communicating with clients
 	 */
@@ -98,7 +106,7 @@ public class ServerInterface {
 		handler.pauseServer();
 		System.out.println("Server Paused");
 	}
-	
+
 	/**
 	 * Restarts the server listening for incoming connections
 	 */
@@ -107,14 +115,28 @@ public class ServerInterface {
 		System.out.println("Server Restarted");
 	}
 	
+	/** 
+	 * Displays the raw times stored within timings folder, after querying user for
+	 * the desired product ID
+	 */
+	private void getRawTimes() {
+		listAssemblies();
+		String productID = in.nextLine();
+		TimeRetrieval timeRetriever = new TimeRetrieval(pathToParentFolder);
+		System.out.println(timeRetriever.retrieveRawTimes(productID));
+	}
+	
+	/**
+	 * Lists all assembly folders in the parent folder.
+	 */
 	private void listAssemblies() {
 		File parentFolder = new File(pathToParentFolder);
 		if (parentFolder.isDirectory()) {
 			for (File pouiFolder : parentFolder.listFiles()) {
 				if (pouiFolder.isDirectory()) {
-					String productName = pouiFolder.getName();
-					if (!(productName.substring(0, 1).equals("."))) {
-						productNames += productName + ";";
-					}
+					System.out.println(pouiFolder.getName());
+				}
+			}
+		}
 	}
 }
