@@ -71,8 +71,8 @@ public class TimeStorer extends Thread {
 		// will be in the same file). The date is represented by DAY.MONTH.YEAR without the forward
 		// slashes.
 		Calendar calendar = Calendar.getInstance();
-		String fileName = this.pathToParentFolder + ".timings/" + productID + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "." + 
-				(calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + ".txt";
+		String fileName = this.pathToParentFolder + ".timings/" + productID + "/" + calendar.get(Calendar.DAY_OF_MONTH) + 
+				(calendar.get(Calendar.MONTH) + 1) + calendar.get(Calendar.YEAR) + ".txt";
 
 		// create the file to be written, and then write to it
 		try {
