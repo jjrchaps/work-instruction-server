@@ -51,7 +51,7 @@ public class Server {
 		System.out.println("Starting POUI Server on port " + port);
 		connectionHandler.start();
 
-		ServerInterface textInterface = new ServerInterface(in, connectionHandler);
+		ServerInterface textInterface = new ServerInterface(in, connectionHandler, pathToParentFolder);
 		textInterface.getInput();
 	}
 }
