@@ -1,5 +1,6 @@
 package serverComponents;
 
+import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -20,7 +21,14 @@ public class ServerInterface {
 	 */
 	private ConnectionHandler handler;
 
-	public ServerInterface(Scanner in, ConnectionHandler handler) {
+	/**
+	 * Creates new instance of server interface, which will be the method of user interaction
+	 * with the work instruction server.
+	 * @param in An instance of Scanner to read input from the terminal
+	 * @param handler An instance of ConnectionHandler that manages all client threads
+	 * @param pathToAssembly The absolute path to the parent folder containing all assemblies.
+	 */
+	public ServerInterface(Scanner in, ConnectionHandler handler, String pathToAssembly) {
 		this.in = in;
 		this.handler = handler;
 	}
@@ -97,5 +105,16 @@ public class ServerInterface {
 	private void startServer() {
 		handler.startServer();
 		System.out.println("Server Restarted");
+	}
+	
+	private void listAssemblies() {
+		File parentFolder = new File(pathToParentFolder);
+		if (parentFolder.isDirectory()) {
+			for (File pouiFolder : parentFolder.listFiles()) {
+				if (pouiFolder.isDirectory()) {
+					String productName = pouiFolder.getName();
+					if (!(productName.substring(0, 1).equals("."))) {
+						productNames += productName + ";";
+					}
 	}
 }
