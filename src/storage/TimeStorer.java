@@ -13,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
  * appropriate files/folders to store times within.
  * @author jameschapman
  */
-public class timingStorer extends Thread {
+public class TimeStorer extends Thread {
 	/**
 	 * A queue to pull timing information to store to file.
 	 */
@@ -25,7 +25,7 @@ public class timingStorer extends Thread {
 	 */
 	private String pathToParentFolder;
 
-	public timingStorer(BlockingQueue<String> queue, String pathToParentFolder) {
+	public TimeStorer(BlockingQueue<String> queue, String pathToParentFolder) {
 		this.queue = queue;
 		this.pathToParentFolder = pathToParentFolder;
 	}

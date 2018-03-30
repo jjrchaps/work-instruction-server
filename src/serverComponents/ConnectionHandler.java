@@ -7,7 +7,7 @@ import java.net.SocketException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import storage.timingStorer;
+import storage.TimeStorer;
 
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
@@ -58,7 +58,7 @@ public class ConnectionHandler extends Thread {
 	 */
 	public void run() {
 		BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
-		timingStorer timingStorer = new timingStorer(queue, pathToParentFolder);
+		TimeStorer timingStorer = new TimeStorer(queue, pathToParentFolder);
 		timingStorer.start();
 		while (true) {
 			if (serverOpen) {
