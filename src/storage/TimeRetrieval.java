@@ -2,6 +2,8 @@ package storage;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -33,33 +35,54 @@ public class TimeRetrieval {
 		Calendar calendar = Calendar.getInstance();
 		String fileToIgnore =calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + 
 				"." + calendar.get(Calendar.YEAR) + ".txt";
-		String results = null;
-		String pathToTimingFolder = this.pathToParentFolder + "/.timings/ + productID";
+		String results = "";
+		String pathToTimingFolder = this.pathToParentFolder + "/.timings/" + productID;
 		File timingsFolder = new File(pathToTimingFolder);
 		if (!(timingsFolder.exists())) {
 			return "No timings available for " + productID;
 		}
-
+		
+		// If there is only one file and it is from the current date, return early as to not
+		// interfere with potential storing of other data.
 		String[] fileNames = timingsFolder.list();
 		if (fileNames.length == 1) {
 			if (fileNames[0].equals(fileToIgnore)) {
 				return "No timings available for " + productID;
 			}
 		}
-		
+
 		int numberOfSteps = getNumberOfSteps(productID);
 		BufferedReader in;
 		for (String fileName : fileNames) {
 			if (!(fileName.equals(fileToIgnore))) {
-				in = new BufferedReader(new FileReader())
+				String filePath = pathToTimingFolder + "/" + fileName;
+				try {
+					in = new BufferedReader(new FileReader(filePath));
+					// Add date the data was captured above the raw times when before they're displayed
+					results += "Date: " + fileName.subSequence(0, fileName.length()-4) + "\n";
+					results += "----\n";
+					// Begin reading from file to list the raw times
+					String nextLine = in.readLine();
+					int counter = 1;
+					while (nextLine != null) {
+						results = results + nextLine + "\n";
+						if (counter == numberOfSteps) {
+							results += "----\n";
+							counter = 0;
+						}
+						nextLine = in.readLine();
+						counter++;
+					}
+					results += "\n";
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-
-
-
 		return results;
 	}
-	
+
+
 	/**
 	 * Returns the number of steps in an assembly given the product ID
 	 * @param productID The product in questions
@@ -75,5 +98,10 @@ public class TimeRetrieval {
 			numberOfImages--;
 		}
 		return numberOfImages;
+	}
+	
+	public static void main(String[] args) {
+		TimeRetrieval test = new TimeRetrieval("/Users/jameschapman/Projects/Images/");
+		System.out.println(test.retrieveRawTimes("test"));
 	}
 }
