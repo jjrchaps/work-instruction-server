@@ -57,20 +57,25 @@ public class ServerInterface {
 				}
 				else if (input == 2) {
 					startServer();
+					advanceScanner();
 				}
 				else if (input == 3) {
+					advanceScanner();
+					getRawTimes();
+				}
+				else if (input == 4) {
 					shutdown();
+					advanceScanner();
 				}
 				else {
 					System.out.println("Invalid selection");
 					// advance the scanner
-					in.nextLine();
+					advanceScanner();
 				}
 			}
 			else {
 				System.out.println("Invalid entry");
-				// advance the scanner
-				in.nextLine();
+				advanceScanner();
 			}
 		}
 	}
@@ -84,7 +89,8 @@ public class ServerInterface {
 		// list available options
 		System.out.println("1: Pause Server");
 		System.out.println("2: Start Server");
-		System.out.println("3: Shutdown Server");
+		System.out.println("3: Get Captured Build Time Data");
+		System.out.println("4: Shutdown Server");
 
 		// query for user input
 		System.out.println("\nSelection: ");
@@ -120,6 +126,7 @@ public class ServerInterface {
 	 * the desired product ID
 	 */
 	private void getRawTimes() {
+		System.out.println("Select an assembly: ");
 		listAssemblies();
 		String productID = in.nextLine();
 		TimeRetrieval timeRetriever = new TimeRetrieval(pathToParentFolder);
@@ -133,10 +140,19 @@ public class ServerInterface {
 		File parentFolder = new File(pathToParentFolder);
 		if (parentFolder.isDirectory()) {
 			for (File pouiFolder : parentFolder.listFiles()) {
-				if (pouiFolder.isDirectory()) {
+				// if the file is a directory and it's name doesn't start with a period,
+				// that means it's an assembly and it should be listed.
+				if (pouiFolder.isDirectory() && (!pouiFolder.getName().substring(0, 1).equals("."))) {
 					System.out.println(pouiFolder.getName());
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Advances the input stream to the the next newline character.
+	 */
+	private void advanceScanner() {
+		in.nextLine();
 	}
 }
