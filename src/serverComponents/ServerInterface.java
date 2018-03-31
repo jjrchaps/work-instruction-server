@@ -54,6 +54,7 @@ public class ServerInterface {
 				int input = in.nextInt();
 				if (input == 1) {
 					pauseServer();
+					advanceScanner();
 				}
 				else if (input == 2) {
 					startServer();
