@@ -29,6 +29,10 @@ public class TimeRetrieval {
 	 * @return A formatted string ready for display to the user
 	 */
 	public String retrieveRawTimes(String productID) {
+		// catches blank input
+		if (productID.equals("")) {
+			return "";
+		}
 		// Since the current date will not be viewable, we can simply ignore the file with the
 		// current days date. As well, with this method we don't have to worry about clashing
 		// with other thread that could be writing concurrently to these calculations.
