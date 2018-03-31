@@ -127,8 +127,9 @@ public class ServerInterface {
 	 * the desired product ID
 	 */
 	private void getRawTimes() {
-		System.out.println("Select an assembly: ");
+		System.out.println("Available Assemblies: ");
 		listAssemblies();
+		System.out.print("Select assembly: ");
 		String productID = in.nextLine();
 		TimeRetrieval timeRetriever = new TimeRetrieval(pathToParentFolder);
 		System.out.println(timeRetriever.retrieveRawTimes(productID));
@@ -144,7 +145,7 @@ public class ServerInterface {
 				// if the file is a directory and it's name doesn't start with a period,
 				// that means it's an assembly and it should be listed.
 				if (pouiFolder.isDirectory() && (!pouiFolder.getName().substring(0, 1).equals("."))) {
-					System.out.println(pouiFolder.getName());
+					System.out.println(" - " + pouiFolder.getName());
 				}
 			}
 		}
