@@ -55,10 +55,12 @@ public class ServerInterface {
 				if (input == 1) {
 					pauseServer();
 					advanceScanner();
+					returnToMenu();
 				}
 				else if (input == 2) {
 					startServer();
 					advanceScanner();
+					returnToMenu();
 				}
 				else if (input == 3) {
 					advanceScanner();
@@ -67,7 +69,6 @@ public class ServerInterface {
 				}
 				else if (input == 4) {
 					shutdown();
-					advanceScanner();
 				}
 				else {
 					System.out.println("Invalid selection");
@@ -163,7 +164,7 @@ public class ServerInterface {
 	 * Waits for the user to press the enter key, then returns to main menu.
 	 */
 	private void returnToMenu() {
-		System.out.println("Press enter to return to main menu");
+		System.out.println("Press enter to return to main menu...");
 		in.nextLine();
 	}
 }
