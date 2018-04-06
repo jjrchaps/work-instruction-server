@@ -69,7 +69,7 @@ public class TimeRetrieval {
 					String nextLine = in.readLine();
 					int counter = 1;
 					while (nextLine != null) {
-						results = results + nextLine + "\n";
+						results = results + "Step " + counter + ": " + nextLine + "\n";
 						if (counter == numberOfSteps) {
 							results += "----\n";
 							counter = 0;
