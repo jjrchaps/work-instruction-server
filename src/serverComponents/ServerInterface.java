@@ -63,6 +63,7 @@ public class ServerInterface {
 				else if (input == 3) {
 					advanceScanner();
 					getRawTimes();
+					returnToMenu();
 				}
 				else if (input == 4) {
 					shutdown();
@@ -94,7 +95,7 @@ public class ServerInterface {
 		System.out.println("4: Shutdown Server");
 
 		// query for user input
-		System.out.println("\nSelection: ");
+		System.out.print("\nSelection: ");
 	}
 
 	/**
@@ -155,6 +156,14 @@ public class ServerInterface {
 	 * Advances the input stream to the the next newline character.
 	 */
 	private void advanceScanner() {
+		in.nextLine();
+	}
+	
+	/**
+	 * Waits for the user to press the enter key, then returns to main menu.
+	 */
+	private void returnToMenu() {
+		System.out.println("Press enter to return to main menu");
 		in.nextLine();
 	}
 }
