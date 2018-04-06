@@ -68,10 +68,13 @@ public class TimeRetrieval {
 					// Begin reading from file to list the raw times
 					String nextLine = in.readLine();
 					int counter = 1;
+					float buildTime = 0;
 					while (nextLine != null) {
-						results = results + "Step " + counter + ": " + nextLine + "\n";
+						results = results + "Step " + counter + ": " + nextLine + "s\n";
+						buildTime += Float.parseFloat(nextLine);
 						if (counter == numberOfSteps) {
-							results += "----\n";
+							results += "Build Time: " + buildTime + " seconds";
+							results += "\n----\n";
 							counter = 0;
 						}
 						nextLine = in.readLine();
