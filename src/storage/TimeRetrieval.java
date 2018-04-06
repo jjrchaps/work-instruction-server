@@ -76,6 +76,7 @@ public class TimeRetrieval {
 							results += "Build Time: " + buildTime + " seconds";
 							results += "\n----\n";
 							counter = 0;
+							buildTime = 0;
 						}
 						nextLine = in.readLine();
 						counter++;
