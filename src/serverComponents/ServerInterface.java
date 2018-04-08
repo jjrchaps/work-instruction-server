@@ -3,7 +3,7 @@ package serverComponents;
 import java.io.File;
 import java.util.Scanner;
 
-import storage.TimeRetrieval;
+import fileAccess.TimeRetrieval;
 
 /**
  * Server interface is the class that handles user interactions. The

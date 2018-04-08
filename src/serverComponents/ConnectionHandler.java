@@ -7,7 +7,7 @@ import java.net.SocketException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import storage.TimeStorer;
+import fileAccess.TimeStorer;
 
 /**
  * ConnectionHandler will handle initial incoming connections and create a thread
