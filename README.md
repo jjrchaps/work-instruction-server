@@ -6,8 +6,11 @@ well as receiving and storing timing information reported from clients at the en
 build.
 
 **Installation:**<br />
-Currently, there are no automated build tools implemented in the project. Maven will soon be integrated into the project. Thus
-standard java compiling via a terminal is the best method to create the .jar file.
+A build.xml file is included to compile, create a .jar file, and also erase all generated
+files using Apache Ant. There are 4 options: init, compile, createJar, and clean. The 
+depedency's are as follows: init has none, compile depends on init, and createJar depends
+on compile. Thus just running createJar will do everything needed (folder creation/compiling) 
+to get a .jar created in the newly formed "dist" folder in the project directory.
 
 **Usage:**<br />
 The server server interface is terminal based, and should be started from a terminal to
