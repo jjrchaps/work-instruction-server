@@ -85,9 +85,9 @@ public class ServerInterface {
 
 	private void displayOptions() {
 		// formatting for top of poui controls
-		System.out.println("\n--------------------");
-		System.out.println("POUI Server Controls");
-		System.out.println("--------------------\n");
+		System.out.println("\n---------------");
+		System.out.println("Server Controls");
+		System.out.println("---------------\n");
 
 		// list available options
 		System.out.println("1: Pause Server");
