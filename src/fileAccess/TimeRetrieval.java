@@ -28,7 +28,7 @@ public class TimeRetrieval {
 	 * @param productID The product ID of the desired times
 	 * @return A formatted string ready for display to the user
 	 */
-	public String retrieveRawTimes(String productID) {
+	public String retrieveAllRawTimes(String productID) {
 		// catches blank input
 		if (productID.equals("")) {
 			return "";
@@ -89,6 +89,10 @@ public class TimeRetrieval {
 		}
 		return results;
 	}
+	
+	public String listAvailableDays() {
+		return null;
+	}
 
 
 	/**
@@ -110,6 +114,6 @@ public class TimeRetrieval {
 	
 	public static void main(String[] args) {
 		TimeRetrieval test = new TimeRetrieval("/Users/jameschapman/Projects/Images/");
-		System.out.println(test.retrieveRawTimes("test"));
+		System.out.println(test.retrieveAllRawTimes("test"));
 	}
 }
