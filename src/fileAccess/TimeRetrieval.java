@@ -55,36 +55,38 @@ public class TimeRetrieval {
 			}
 		}
 
-		int numberOfSteps = getNumberOfSteps(productID);
-		BufferedReader in;
+//		int numberOfSteps = getNumberOfSteps(productID);
+//		BufferedReader in;
+		results = "";
 		for (String fileName : fileNames) {
 			if (!(fileName.equals(fileToIgnore))) {
-				String filePath = pathToTimingFolder + "/" + fileName;
-				try {
-					in = new BufferedReader(new FileReader(filePath));
-					// Add date the data was captured above the raw times when before they're displayed
-					results += "Date: " + fileName.subSequence(0, fileName.length()-4) + "\n";
-					results += "----\n";
-					// Begin reading from file to list the raw times
-					String nextLine = in.readLine();
-					int counter = 1;
-					float buildTime = 0;
-					while (nextLine != null) {
-						results = results + "Step " + counter + ": " + nextLine + "s\n";
-						buildTime += Float.parseFloat(nextLine);
-						if (counter == numberOfSteps) {
-							results += "Build Time: " + buildTime + " seconds";
-							results += "\n----\n";
-							counter = 0;
-							buildTime = 0;
-						}
-						nextLine = in.readLine();
-						counter++;
-					}
-					results += "\n";
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				results += formatSingleDaysTimingInfo(productID, fileName);
+//				String filePath = pathToTimingFolder + "/" + fileName;
+//				try {
+//					in = new BufferedReader(new FileReader(filePath));
+//					// Add date the data was captured above the raw times when before they're displayed
+//					results += "Date: " + fileName.subSequence(0, fileName.length()-4) + "\n";
+//					results += "----\n";
+//					// Begin reading from file to list the raw times
+//					String nextLine = in.readLine();
+//					int counter = 1;
+//					float buildTime = 0;
+//					while (nextLine != null) {
+//						results = results + "Step " + counter + ": " + nextLine + "s\n";
+//						buildTime += Float.parseFloat(nextLine);
+//						if (counter == numberOfSteps) {
+//							results += "Build Time: " + buildTime + " seconds";
+//							results += "\n----\n";
+//							counter = 0;
+//							buildTime = 0;
+//						}
+//						nextLine = in.readLine();
+//						counter++;
+//					}
+//					results += "\n";
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return results;
@@ -93,7 +95,8 @@ public class TimeRetrieval {
 	/**
 	 * Goes to specified product and lists every available day that timings were captured.
 	 * @param productID The product that the available days of timings are desired
-	 * @return A formatted string containing the dates of all days timings were captured.
+	 * @return A formatted string containing the dates of all days timings were captured, 
+	 * null if no timing information available for supplied productID
 	 */
 	public String listAvailableDays(String productID) {
 		String pathToTimingsFolder = this.pathToParentFolder + ".timings/" + productID + "/";
@@ -121,6 +124,23 @@ public class TimeRetrieval {
 		return null;
 	}
 
+	/**
+	 * Gets the raw timing information for a specific day selected by the user
+	 * @param productID The id of the product the timing information is needed for
+	 * @param day The day in question selected by the user.
+	 * @return The days timing information if available/exists, null otherwise.
+	 */
+	public String retrieveSpecificDayRawTimes(String productID, String day) {
+		// add .txt extension to day string as the user will not be made to enter it.
+		day += ".txt";
+		String pathToSelectedDay = this.pathToParentFolder + ".timings/" + productID + "/" + day;
+		File selectedDay = new File(pathToSelectedDay);
+		if (selectedDay.exists()) {
+			return formatSingleDaysTimingInfo(productID, day);
+		}
+		return null;
+	}
+
 
 	/**
 	 * Returns the number of steps in an assembly given the product ID
@@ -137,6 +157,48 @@ public class TimeRetrieval {
 			numberOfImages--;
 		}
 		return numberOfImages;
+	}
+
+	/**
+	 * Formats the timing results for the product matching the id on the specified day
+	 * @param productID The product being inquired about
+	 * @param date The date in question
+	 * @return The timing results formatted to be displayed, null if they don't exists or couldn't
+	 * be accessed.
+	 */
+	private String formatSingleDaysTimingInfo(String productID, String date) {
+		String filePath = pathToParentFolder + ".timings/" + productID + "/" + date;
+		BufferedReader in;
+		String results = "";
+		try {
+			in = new BufferedReader(new FileReader(filePath));
+			// Add date the data was captured above the raw times when before they're displayed
+			results += "Date: " + date.subSequence(0, date.length()-4) + "\n";
+			results += "----\n";
+			// Begin reading from file to list the raw times
+			String nextLine = in.readLine();
+			int counter = 1;
+			float buildTime = 0;
+			while (nextLine != null) {
+				results = results + "Step " + counter + ": " + nextLine + "s\n";
+				buildTime += Float.parseFloat(nextLine);
+				if (counter == getNumberOfSteps(productID)) {
+					results += "Build Time: " + buildTime + " seconds";
+					results += "\n----\n";
+					counter = 0;
+					buildTime = 0;
+				}
+				nextLine = in.readLine();
+				counter++;
+			}
+			in.close();
+			return results;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// if it's come to this point, an exception has been thrown. Return null as no data
+		// could be successfully retrieved.
+		return null;
 	}
 
 	public static void main(String[] args) {
