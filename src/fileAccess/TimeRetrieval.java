@@ -55,38 +55,10 @@ public class TimeRetrieval {
 			}
 		}
 
-//		int numberOfSteps = getNumberOfSteps(productID);
-//		BufferedReader in;
 		results = "";
 		for (String fileName : fileNames) {
 			if (!(fileName.equals(fileToIgnore))) {
 				results += formatSingleDaysTimingInfo(productID, fileName);
-//				String filePath = pathToTimingFolder + "/" + fileName;
-//				try {
-//					in = new BufferedReader(new FileReader(filePath));
-//					// Add date the data was captured above the raw times when before they're displayed
-//					results += "Date: " + fileName.subSequence(0, fileName.length()-4) + "\n";
-//					results += "----\n";
-//					// Begin reading from file to list the raw times
-//					String nextLine = in.readLine();
-//					int counter = 1;
-//					float buildTime = 0;
-//					while (nextLine != null) {
-//						results = results + "Step " + counter + ": " + nextLine + "s\n";
-//						buildTime += Float.parseFloat(nextLine);
-//						if (counter == numberOfSteps) {
-//							results += "Build Time: " + buildTime + " seconds";
-//							results += "\n----\n";
-//							counter = 0;
-//							buildTime = 0;
-//						}
-//						nextLine = in.readLine();
-//						counter++;
-//					}
-//					results += "\n";
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
 			}
 		}
 		return results;
