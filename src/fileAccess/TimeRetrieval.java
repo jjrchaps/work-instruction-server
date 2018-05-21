@@ -45,7 +45,7 @@ public class TimeRetrieval {
 		if (!(timingsFolder.exists())) {
 			return "No timings available for " + productID;
 		}
-		
+
 		// If there is only one file and it is from the current date, return early as to not
 		// interfere with potential storing of other data.
 		String[] fileNames = timingsFolder.list();
@@ -89,8 +89,35 @@ public class TimeRetrieval {
 		}
 		return results;
 	}
-	
-	public String listAvailableDays() {
+
+	/**
+	 * Goes to specified product and lists every available day that timings were captured.
+	 * @param productID The product that the available days of timings are desired
+	 * @return A formatted string containing the dates of all days timings were captured.
+	 */
+	public String listAvailableDays(String productID) {
+		String pathToTimingsFolder = this.pathToParentFolder + ".timings/" + productID + "/";
+		File timingsFolder = new File(pathToTimingsFolder);
+		if (timingsFolder.exists() && timingsFolder.isDirectory()) {
+			String formattedAvailableDays = "";
+			boolean firstDay = true;
+			for (File timingFile : timingsFolder.listFiles()) {
+				if (firstDay) {
+					formattedAvailableDays += timingFile.getName().substring(0, 
+							timingFile.getName().length()-4);
+					firstDay = false;
+				}
+				else {
+					formattedAvailableDays += "\n" + timingFile.getName().substring(0, 
+							timingFile.getName().length()-4);
+				}
+			}
+			// If there were in fact timings captured, return the formatted string
+			if (!(formattedAvailableDays.equals(""))) {
+				return formattedAvailableDays;
+			}
+		}
+		// If the string is empty of the timings folder doesn't exist, return null.
 		return null;
 	}
 
@@ -111,9 +138,10 @@ public class TimeRetrieval {
 		}
 		return numberOfImages;
 	}
-	
+
 	public static void main(String[] args) {
 		TimeRetrieval test = new TimeRetrieval("/Users/jameschapman/Projects/Images/");
 		System.out.println(test.retrieveAllRawTimes("test"));
+		System.out.println(test.listAvailableDays("test"));
 	}
 }
