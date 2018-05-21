@@ -142,7 +142,13 @@ public class ServerInterface {
 				System.out.println(timeRetriever.retrieveAllRawTimes(productID));
 			}
 			else {
-				//TODO: get timings for specified day from server here
+				String times = timeRetriever.retrieveSpecificDayRawTimes(productID, userSelection);
+				if (times == null) {
+					System.out.println("No available timings for " + productID + " on " + userSelection);
+				}
+				else {
+					System.out.println(times);
+				}
 			}
 		}
 		else {
