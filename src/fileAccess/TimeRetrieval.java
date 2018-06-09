@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 
 /**
  * TimeRetrieval will allow the access of timing files that have been stored. All captured times
@@ -64,6 +66,9 @@ public class TimeRetrieval {
 		return results;
 	}
 
+	//TODO: Properly sort the order that the days are displayed to the user,
+	// Maybe make 2-tuple array, one with file name to be selected and the other with the names
+	// reformatted so it is displayed to the user properly?
 	/**
 	 * Goes to specified product and lists every available day that timings were captured.
 	 * @param productID The product that the available days of timings are desired
@@ -74,17 +79,61 @@ public class TimeRetrieval {
 		String pathToTimingsFolder = this.pathToParentFolder + ".timings/" + productID + "/";
 		File timingsFolder = new File(pathToTimingsFolder);
 		if (timingsFolder.exists() && timingsFolder.isDirectory()) {
+			String[] files = timingsFolder.list();
+			Arrays.sort(files, new Comparator<String>() {
+				public int compare(String first, String second) {
+					// split the file names into string arrays, and then convert to integers.
+					String[] firstString = first.split("\\.");
+					int[] firstNumbers = {0,0,0};
+					for (int i = 0; i < 3; i++) {
+						firstNumbers[i] = Integer.parseInt(firstString[i]);
+					}
+					String[] secondString = second.split("\\.");
+					int[] secondNumbers = {0,0,0};
+					for (int i = 0; i < 3; i++) {
+						secondNumbers[i] = Integer.parseInt(secondString[i]);
+					}
+					// compare years, check to see if years are different
+					if (firstNumbers[2] < secondNumbers[2]) {
+						return 1;
+					}
+					else if (firstNumbers[2] > secondNumbers[2]) {
+						return -1;
+					}
+					// if years aren't different, compare months
+					else {
+						if (firstNumbers[1] < secondNumbers[1]) {
+							return 1;
+						}
+						else if (firstNumbers[1] > secondNumbers[1]) {
+							return -1;
+						}
+						// if months aren't different, then compare days.
+						else {
+							if (firstNumbers[0] < secondNumbers[0]) {
+								return 1;
+							}
+							else if (firstNumbers[0] > secondNumbers[0]) {
+								return -1;
+							}
+							else {
+								return 0;
+							}
+						}
+					}
+				}
+			});
 			String formattedAvailableDays = "";
 			boolean firstDay = true;
-			for (File timingFile : timingsFolder.listFiles()) {
+			for (String timingFile : files) {
 				if (firstDay) {
-					formattedAvailableDays += timingFile.getName().substring(0, 
-							timingFile.getName().length()-4);
+					formattedAvailableDays += timingFile.substring(0, 
+							timingFile.length()-4);
 					firstDay = false;
 				}
 				else {
-					formattedAvailableDays += "\n" + timingFile.getName().substring(0, 
-							timingFile.getName().length()-4);
+					formattedAvailableDays += "\n" + timingFile.substring(0, 
+							timingFile.length()-4);
 				}
 			}
 			// If there were in fact timings captured, return the formatted string
