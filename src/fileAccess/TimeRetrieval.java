@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -204,7 +205,9 @@ public class TimeRetrieval {
 				results = results + "Step " + counter + ": " + nextLine + "s\n";
 				buildTime += Float.parseFloat(nextLine);
 				if (counter == getNumberOfSteps(productID)) {
-					results += "Build Time: " + buildTime + " seconds";
+					BigDecimal roundedTime = new BigDecimal(Float.toString(buildTime));
+					roundedTime = roundedTime.setScale(2, BigDecimal.ROUND_HALF_UP);
+					results += "Build Time: " + roundedTime.floatValue() + " seconds";
 					results += "\n----\n";
 					counter = 0;
 					buildTime = 0;
