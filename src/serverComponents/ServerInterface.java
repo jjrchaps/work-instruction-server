@@ -136,7 +136,7 @@ public class ServerInterface {
 		TimeRetrieval timeRetriever = new TimeRetrieval(pathToParentFolder);
 		String availableDays = timeRetriever.listAvailableDays(productID);
 		if (availableDays != null) {
-			System.out.print(availableDays + "\nPlease choose a date, or type all to view 'all' timings: ");
+			System.out.print(availableDays + "\nPlease choose a date, or type 'all' to view all timings: ");
 			String userSelection = in.nextLine();
 			if (userSelection.trim().equalsIgnoreCase("all")) {
 				System.out.println(timeRetriever.retrieveAllRawTimes(productID));
