@@ -1,6 +1,7 @@
 package main;
 
 import java.io.File;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import serverComponents.ConnectionHandler;
@@ -26,16 +27,20 @@ public class Server {
 		System.out.println("                      -----------------------");
 		System.out.println("Please enter the path to the folder containing all work instructions:");
 		String pathToParentFolder = in.nextLine();
-		
-		System.out.println("Please enter a port number to use: ");
 
 		int port;
 		while (true) {
 			try {
+				System.out.println("Please enter a port number to use: ");
 				port = in.nextInt();
 				in.nextLine();
+				if (port > 65535 || port < 0) {
+					throw new IllegalArgumentException("Enter a port within the range 0 - 65535");
+				}
 				break;
-			} catch (Exception e) {
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			} catch (InputMismatchException e) {
 				in.nextLine();
 				System.out.println("Please enter an integer.");
 			}
