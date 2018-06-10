@@ -21,7 +21,10 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		System.out.println("Please enter the path to the folder containing all POUIs: ");
+		System.out.println("                      -----------------------");
+		System.out.println("                      WORK INSTRUCTION SERVER");
+		System.out.println("                      -----------------------");
+		System.out.println("Please enter the path to the folder containing all work instructions:");
 		String pathToParentFolder = in.nextLine();
 		
 		System.out.println("Please enter a port number to use: ");
